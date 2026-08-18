@@ -14,6 +14,7 @@ The Enounter Logic: The encounter logic will be using the 2014 5th edition rules
 
 
 The Stack:
+
 Frontend
   - React 
   - TypeScript 
