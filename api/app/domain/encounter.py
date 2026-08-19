@@ -33,7 +33,7 @@ def encounter_multiplier(monster_count: int, party_size: int) -> float:
   index = _multiplier_index(monster_count)
   if party_size < 3:
     index += 1            #small party: treat as one step harder
-  elif party_size > 6:
+  elif party_size >= 6:
     index -= 1            #large party: treat as one step easier
   index = max(0, min(index, len(MULTIPLIERS) - 1))  #clamp to valid range
   return MULTIPLIERS[index]

@@ -18,3 +18,6 @@ Why validate in __post_init__?
 rate_encounter returns the adjusted xp alongside the difficulty because I plan to show how close an encounter is to the next tier when I get to making the UI. Having a visual like a progess bar will be more useful to beginner DMs than simply telling them what tier the encounter is at currently. An encounter that is just barely deadly and one that is an almost guaranteed TPK should be easily distinguished visually.
 
 I also implemented clamping in encounter_multiplier. Since the DMG doesn't specify what to do with edge case combat encounters that go past the ends of the table, we're just gonna treat them as the nearest difficulty tier.
+
+#test_encounter.py
+I added tests for the rules as defined by the functions in encounter.py. Ran into some issues when running the tests. Most passed but the 2 handling easy encounters and the difficulty shifting for large parties failed. The former was due to me asserting the wrong thing. The latter was a result of a small syntax error messing with the math involved. After this mistake I added a few more tests to be a bit more thorough with this check.
