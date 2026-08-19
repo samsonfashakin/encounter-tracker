@@ -1,0 +1,23 @@
+Decided to add a Notes file that I'll update with either each commit or each PR. Putting notes here because inline comments will be messy and I'll have to clean them up later.I'll preface my thoughts with the file they're addressing if they're file specific.
+
+#General
+The algo:
+- Each character has four XP thresholds by level (easy, medium, hard, deadly). The sum of these across the party = party thresholds.
+- Each monster has an XP value from its CR.
+- Sum raw monster XP.
+- Multiply by a factor based on monster count because six goblins are harder than one suped up goblin worth six times the XP.
+- Compare adjusted XP against the party thresholds to make sure the fight is fair (or not >:V ).
+
+#models.py
+Why frozen=True?
+  These are values, not entities. Two level 5 characters are interchangeable for XP purposes. Immutability means I'll never accidentally mutate one halfway through a calculation and spend an hour wondering why the numbers drift.
+Why validate in __post_init__?
+  Invalid states should be unrepresentable. If a PartyMember exists, its level is valid and every downstream function can stop checking.
+
+#encounter.py
+rate_encounter returns the adjusted xp alongside the difficulty because I plan to show how close an encounter is to the next tier when I get to making the UI. Having a visual like a progess bar will be more useful to beginner DMs than simply telling them what tier the encounter is at currently. An encounter that is just barely deadly and one that is an almost guaranteed TPK should be easily distinguished visually.
+
+I also implemented clamping in encounter_multiplier. Since the DMG doesn't specify what to do with edge case combat encounters that go past the ends of the table, we're just gonna treat them as the nearest difficulty tier.
+
+#test_encounter.py
+I added tests for the rules as defined by the functions in encounter.py. Ran into some issues when running the tests. Most passed but the 2 handling easy encounters and the difficulty shifting for large parties failed. The former was due to me asserting the wrong thing. The latter was a result of a small syntax error messing with the math involved. After this mistake I added a few more tests to be a bit more thorough with this check.
