@@ -7,6 +7,7 @@ The algo:
 - Sum raw monster XP.
 - Multiply by a factor based on monster count because six goblins are harder than one suped up goblin worth six times the XP.
 - Compare adjusted XP against the party thresholds to make sure the fight is fair (or not >:V ).
+- exp logic uses values because the exp will never change outside of the rules I set. Combat logic uses entities because individual players and monsters will have unique states
 
 #models.py
 Why frozen=True?
@@ -21,3 +22,9 @@ I also implemented clamping in encounter_multiplier. Since the DMG doesn't speci
 
 #test_encounter.py
 I added tests for the rules as defined by the functions in encounter.py. Ran into some issues when running the tests. Most passed but the 2 handling easy encounters and the difficulty shifting for large parties failed. The former was due to me asserting the wrong thing. The latter was a result of a small syntax error messing with the math involved. After this mistake I added a few more tests to be a bit more thorough with this check.
+
+#combatant.py
+mutable entities to represent unique players/monsters and their conditions
+using field(default_factory=list) because a bare [] raises errors in python because every instance would share one list
+is-counscious exists because you can be at 0 hp but stable (not dying), can only be conscious while above 1 hp, and it's something I'll need to check often in combat
+
