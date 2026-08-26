@@ -33,4 +33,7 @@ domain functions will return these values rather than printing or mutating a log
 this lets me assert on the returned event rather than capturing output and having the structure in place helps with the combat log for the UI later
 when I get around to implementing websocket I can send the events without retroactively reworking the code
 
+#combat.py
+advance_turn is the only fucntion that impacts turn progression so I'm routing round increments, condition decrements, and general turn order through it. I want to avoid various counters and timers being slightly off depending on the function that calls them and causing bugs
+CombatError will return something specific for the FastAPI layer to catch and map to a 409
 
