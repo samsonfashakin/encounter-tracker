@@ -58,3 +58,89 @@ class Combat:
         )
     c.conditions = remaining_conditions
     return events
+  
+  def _find(self, combatant_id: str) -> Combatant:
+    for c in self.combatants:
+      if c.id == combatant_id:
+        return c
+    raise CombatError(f"no combatant found with id {combatant_id}")
+  
+  def apply_damage(
+    self, combatant_id: str, amount: int, is_critical: bool = False
+  ) -> list[CombatEvent]:
+    if amount < 0:
+      raise ValueError("Damage amount must be non-negative")
+    
+    target = self._find(combatant_id)
+    events: list[CombatEvent] = []
+    
+    # if downed, any damage is a failed death save
+    if not target.is_conscious:
+      target.death_saves.failures += 2 if is_critical else 1
+      events.append(
+        CombatEvent(
+          "death_save_failure",
+          f"{target.name} took damage while down and fails a death save",
+          target.id,
+        )
+      )
+      if target.death_saves.is_dead:
+        events.append(
+          CombatEvent("death", f"{target.name} has died", target.id,)
+        )
+      return events
+    
+    # Apply damage to temp hp first, temp hp does not stack
+    absorbed = min(target.temp_hp, amount)
+    target.temp_hp -= absorbed
+    remaining_damage = amount - absorbed
+    
+    target.current_hp -= remaining_damage
+    events.append(
+      CombatEvent("damage", f"{target.name} takes {amount} damage", target.id)
+    )
+    
+    if target.current_hp <= 0:
+      overflow = abs(target.current_hp)
+      target.current_hp = 0
+      target.concentrating_on = None
+      
+      if overflow >= target.max_hp:
+        target.death_saves.failures = 3
+        events.append(
+          CombatEvent("death", f"{target.name} has died", target.id,)
+        )
+      else:
+        events.append(
+          CombatEvent(
+            "unconscious",
+            f"{target.name} has fallen unconscious",
+            target.id,
+          )
+        )
+    elif target.concentrating_on:
+      dc = max(10, remaining_damage // 2)
+      events.append(
+        CombatEvent(
+          "concentration_check",
+          f"{target.name} must make a concentration check (DC {dc})",
+          target.id,
+        )
+      )
+    return events
+  
+  def heal(self, combatant_id: str, amount: int) -> list[CombatEvent]:
+    target = self._find(combatant_id)
+    was_down = not target.is_conscious
+    target.current_hp = min(target.max_hp, target.current_hp + amount)
+    
+    events = [
+      CombatEvent("heal", f"{target.name} heals {amount} HP", target.id)
+    ]
+    if was_down and target.is_conscious:
+      events.append(
+        CombatEvent(
+          "revived", f"{target.name} is revived", target.id
+        )
+      )
+    return events

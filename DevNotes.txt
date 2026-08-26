@@ -36,4 +36,6 @@ when I get around to implementing websocket I can send the events without retroa
 #combat.py
 advance_turn is the only fucntion that impacts turn progression so I'm routing round increments, condition decrements, and general turn order through it. I want to avoid various counters and timers being slightly off depending on the function that calls them and causing bugs
 CombatError will return something specific for the FastAPI layer to catch and map to a 409
-
+Overflow check happens before clamping, instant death from a massive hit campares the excess damage against max hp so I need the negative value before I zero it out
+Concentration is dropped upon falling unconscious so the player won't roll to maintain concentration and no check is issued
+The concentration dc uses the damage to hp and not total hp. Apparently the actual rules uses the total damage of the hit even if some is mitigated. I think that's stupid so I won't be doing that.
