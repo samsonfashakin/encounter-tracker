@@ -28,3 +28,9 @@ mutable entities to represent unique players/monsters and their conditions
 using field(default_factory=list) because a bare [] raises errors in python because every instance would share one list
 is-counscious exists because you can be at 0 hp but stable (not dying), can only be conscious while above 1 hp, and it's something I'll need to check often in combat
 
+#events.py
+domain functions will return these values rather than printing or mutating a log
+this lets me assert on the returned event rather than capturing output and having the structure in place helps with the combat log for the UI later
+when I get around to implementing websocket I can send the events without retroactively reworking the code
+
+
