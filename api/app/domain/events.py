@@ -5,4 +5,4 @@ class CombatEvent:
     kind: str
     message: str
     combatant_id: str | None = None
-    
+    data: dict | None = None

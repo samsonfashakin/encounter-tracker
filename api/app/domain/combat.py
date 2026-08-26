@@ -97,7 +97,12 @@ class Combat:
     
     target.current_hp -= remaining_damage
     events.append(
-      CombatEvent("damage", f"{target.name} takes {amount} damage", target.id)
+      CombatEvent(
+        "damage", 
+        f"{target.name} takes {amount} damage", 
+        target.id,
+        {"total": amount, "absorbed": absorbed, "to_hp": remaining_damage},
+      )
     )
     
     if target.current_hp <= 0:

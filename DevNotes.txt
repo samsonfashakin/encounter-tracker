@@ -32,6 +32,7 @@ is-counscious exists because you can be at 0 hp but stable (not dying), can only
 domain functions will return these values rather than printing or mutating a log
 this lets me assert on the returned event rather than capturing output and having the structure in place helps with the combat log for the UI later
 when I get around to implementing websocket I can send the events without retroactively reworking the code
+added a data value for more involved damage reporting
 
 #combat.py
 advance_turn is the only fucntion that impacts turn progression so I'm routing round increments, condition decrements, and general turn order through it. I want to avoid various counters and timers being slightly off depending on the function that calls them and causing bugs
@@ -39,3 +40,4 @@ CombatError will return something specific for the FastAPI layer to catch and ma
 Overflow check happens before clamping, instant death from a massive hit campares the excess damage against max hp so I need the negative value before I zero it out
 Concentration is dropped upon falling unconscious so the player won't roll to maintain concentration and no check is issued
 The concentration dc uses the damage to hp and not total hp. Apparently the actual rules uses the total damage of the hit even if some is mitigated. I think that's stupid so I won't be doing that.
+Decided to make the damage reporting a lil bit more complex cuz the damage is being applied properly with mitigation from temp_hp calculated properly but for the sake of the UI I'd like more info so I can, if I want, visually display why a hit is doing less damage than it should ex:20 damage (7 absorbed)
