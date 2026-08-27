@@ -25,29 +25,29 @@ class ActiveCondition:
   name: str
   duration: int | None = None  # Duration in rounds, None = indefinite
   
-  @dataclass
-  class Combatant:
-    id: str
-    name: str
-    max_hp: int
-    current_hp: int
-    initiative: int
-    dexterity: int
-    is_player: bool
-    temp_hp: int = 0
-    conditions: list[ActiveCondition] = field(default_factory=list)
-    death_saves: DeathSaves = field(default_factory=DeathSaves)
-    concentrating_on: str | None = None
-    
-    @property
-    def is_conscious(self) -> bool:
-      return self.current_hp > 0
-    
-    @property
-    def is_dead(self) -> bool:
-      return self.death_saves.is_dead
-    
-    def has_condition(self, name: str) -> bool:
-      return any(c.name == name for c in self.conditions)
+@dataclass
+class Combatant:
+  id: str
+  name: str
+  max_hp: int
+  current_hp: int
+  initiative: int
+  dexterity: int
+  is_player: bool
+  temp_hp: int = 0
+  conditions: list[ActiveCondition] = field(default_factory=list)
+  death_saves: DeathSaves = field(default_factory=DeathSaves)
+  concentrating_on: str | None = None
+  
+  @property
+  def is_conscious(self) -> bool:
+    return self.current_hp > 0
+  
+  @property
+  def is_dead(self) -> bool:
+    return self.death_saves.is_dead
+  
+  def has_condition(self, name: str) -> bool:
+    return any(c.name == name for c in self.conditions)
     
     

@@ -46,7 +46,7 @@ class Combat:
     events: list[CombatEvent] = []
     remaining_conditions: list[ActiveCondition] = []
     for cond in c.conditions:
-      if cond.rounds_remaining is None:
+      if cond.duration is None:
         remaining_conditions.append(cond)
       else:
         events.append(
@@ -143,6 +143,7 @@ class Combat:
       CombatEvent("heal", f"{target.name} heals {amount} HP", target.id)
     ]
     if was_down and target.is_conscious:
+      target.death_saves.reset()
       events.append(
         CombatEvent(
           "revived", f"{target.name} is revived", target.id
