@@ -32,8 +32,8 @@ class Combatant:
   max_hp: int
   current_hp: int
   initiative: int
-  dexterity: int
-  is_player: bool
+  dexterity: int = 10
+  is_player: bool = False
   temp_hp: int = 0
   conditions: list[ActiveCondition] = field(default_factory=list)
   death_saves: DeathSaves = field(default_factory=DeathSaves)
