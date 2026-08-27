@@ -109,3 +109,9 @@ def test_damage_event_reports_the_full_hit_not_the_net():
   damage_event = next(e for e in events if e.kind == "damage")
   assert "12 damage" in damage_event.message
   assert c.current_hp == 13
+  
+def test_combatant_requires_only_core_fields():
+  c = Combatant("gob1", "Goblin 1", 7, 7, 12)
+  assert c.dexterity == 10
+  assert c.is_player is False
+  assert c.conditions == []
