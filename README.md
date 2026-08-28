@@ -48,3 +48,9 @@ The Frontend
 
 Stretch Goal:
 - WebSockets so the DM's board and the players' view stay in sync
+
+
+Rules Interpretations
+- Initiative ties: usually players would roll against each other to break the tie or the DM would decide. Gonna simplify this and the player with the higher dex wins. For pve initiative ties the player wins.
+- Condition timers: conditions can end at the start or end of a turn or after a set time. Gonna simplify this to a unique counter for either the caster or afflicted that decrements at the end of their turn.
+- Concentration DC: the rules are simple so we'll use them as is. Half of the damage taken, 10 minimum.
