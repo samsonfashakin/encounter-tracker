@@ -45,3 +45,10 @@ Decided to make the damage reporting a lil bit more complex cuz the damage is be
 #test_combat.py
 test_massive_damage_kills_outright and test_overflow_just_below_max_hp_only_knocks_out are a boundary pair that test that the player state is properly impacted by massive hits
 test_damage_event_reports_the_full_hit_not_the_net checks that the change I made to damage reporting is working as intended
+
+#schemas.py
+API contract types
+Deliberately separate from app.domain
+These will describe what goes over the wire, not how the rules work
+The Field constraints act as validators, invalid inputs will be rejected with a 422 error message before the domain code runs
+CombatActionResponse returns both new states and events to give the frontend everything it needs in one round trip so that it can easily re-render and append to the log
